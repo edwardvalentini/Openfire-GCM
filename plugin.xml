@@ -5,7 +5,7 @@
    <name>GCM Helper</name>
    <description>Helper plugin to integrate your external gcm service</description>
    <author>Florian Kimmann</author>
-   <version>1.0.0</version>
+   <version>1.1.0</version>
    <date>27/03/2014</date>
    <minServerVersion>3.9.0</minServerVersion>
 

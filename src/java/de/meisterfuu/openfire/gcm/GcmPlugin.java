@@ -39,8 +39,8 @@ public class GcmPlugin implements Plugin, PacketInterceptor {
     private static final String GCM_API_KEY = "plugin.gcmh.api_key";
     private static final String GCM_SENDER_ID = "plugin.gcmh.sender_id";
 
-    public static final String DEFAULT_GCM_HOST = "gcm.googleapis.com";
-    public static final int DEFAULT_GCM_PORT = 5235;
+    public static final String DEFAULT_GCM_HOST = "gcm-preprod.googleapis.com";
+    public static final int DEFAULT_GCM_PORT = 5236;
     public static final String GCM_ELEMENT_NAME = "gcm";
     public static final String GCM_NAMESPACE = "google:mobile:data";
 
@@ -99,11 +99,11 @@ public class GcmPlugin implements Plugin, PacketInterceptor {
         mGson = new Gson();
 
         interceptorManager.addInterceptor(this);
-        ccsClient = new CcsClient(mGCMHost, mGCMPort, mGCMApiKey, mGCMSengerId);
+        ccsClient = new CcsClient(mGCMHost, mGCMPort, mGCMSengerId, mGCMApiKey);
         try {
             ccsClient.connect();
         } catch (XMPPException e) {
-            e.printStackTrace();
+            Log.error("Error while connecting to GCM", e);
         }
     }
 

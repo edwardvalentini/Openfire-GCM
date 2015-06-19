@@ -27,7 +27,7 @@ class CcsClient {
     public static final Logger Log = LoggerFactory.getLogger(CcsClient.class);
     private String host;
     private int port;
-    private String sengerId;
+    private String senderId;
     private String apiKey;
     boolean debug = false;
 
@@ -35,10 +35,10 @@ class CcsClient {
     private XMPPConnection connection;
     private ConnectionConfiguration config;
 
-    CcsClient(String host, int port, String sengerId, String apiKey) {
+    CcsClient(String host, int port, String senderId, String apiKey) {
         this.host = host;
         this.port = port;
-        this.sengerId = sengerId;
+        this.senderId = senderId;
         this.apiKey = apiKey;
 
         // Add GcmPacketExtension
@@ -251,6 +251,7 @@ class CcsClient {
 
         connection = new XMPPConnection(config);
         connection.connect();
+        Log.info("Ccs client connected as anonymous");
 
         connection.addConnectionListener(new ConnectionListener() {
 
@@ -309,9 +310,10 @@ class CcsClient {
                 Log.info("Sent: {0}", packet.toXML());
             }
         }, new PacketTypeFilter(Message.class));
-
-        connection.login(sengerId + "@" + host, apiKey);
-        Log.info("logged in: " + sengerId);
+        Log.info("[CcsClient] login= " + senderId + "@gcm.googleapis.com");
+        Log.info("[CcsClient] password= " + apiKey);
+        connection.login(senderId + "@gcm.googleapis.com", apiKey);
+        Log.info("[CcsClient] logged in: " + senderId);
     }
 
     private void handleMessage(Map<String, Object> jsonMap) {
