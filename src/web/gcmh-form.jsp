@@ -13,19 +13,27 @@
 	boolean save = request.getParameter("save") != null;	
 	boolean gcmhDebug = ParamUtils.getBooleanParameter(request, "gcmhDebug", false);
 	boolean gcmhMode = ParamUtils.getBooleanParameter(request, "gcmhMode", false);
-	String gcmhURL = ParamUtils.getParameter(request, "gcmhURL");
-    
+	String gcmhHost = ParamUtils.getParameter(request, "gcmhHost");
+	int gcmhPort = ParamUtils.getParameter(request, "gcmhPort");
+	String gcmhSenderId = ParamUtils.getParameter(request, "gcmhSenderId");
+	String gcmhApiKey = ParamUtils.getParameter(request, "gcmhApiKey");
+
 	GcmPlugin plugin = (GcmPlugin) XMPPServer.getInstance().getPluginManager().getPlugin("gcmh");
 
 	Map<String, String> errors = new HashMap<String, String>();	
 	if (save) {
+	/*
 	  if (gcmhURL == null || gcmhURL.trim().length() < 1) {
 	     errors.put("missinggcmhURL", "missinggcmhURL");
 	  }
+	  */
               
 	  if (errors.size() == 0) {
 	     //plugin.setEnabled(gcmhDebug);
-	     plugin.setURL(gcmhURL);
+	     plugin.setHost(gcmhHost);
+	     plugin.setPort(gcmhPort);
+	     plugin.setSenderId(gcmhSenderId);
+	     plugin.setApiKey(gcmhApiKey);
          plugin.setDebug(gcmhDebug);
          if(gcmhMode){
         	 plugin.setMode(GcmPlugin.MODE_OFFLINE);
@@ -39,7 +47,10 @@
 	}
     
 	//gcmhDebug = plugin.isEnabled();
-	gcmhURL = plugin.getURL();
+	gcmhHost = plugin.getHost();
+	gcmhPort = plugin.getPort();
+	gcmhSenderId = plugin.getSenderId();
+	gcmhApiKey = plugin.getApiKey();
 	gcmhDebug = plugin.getDebug();
 	if(plugin.getMode().equals(GcmPlugin.MODE_ALL)){
 		gcmhMode = false;
@@ -82,11 +93,32 @@
 	<table cellpadding="3" cellspacing="0" border="0" width="100%">
 	<tbody>
 	  <tr>
-	     <td width="5%" valign="top"><fmt:message key="gcmh.url" />:&nbsp;</td>
-	     <td width="95%"><input type="text" name="gcmhURL" value="<%= gcmhURL %>"></td>
-	     <% if (errors.containsKey("missinggcmhURL")) { %>
-	        <span class="jive-error-text"><fmt:message key="gcmh.url.missing" /></span>
+	     <td width="5%" valign="top"><fmt:message key="gcmh.host" />:&nbsp;</td>
+	     <td width="95%"><input type="text" name="gcmhHost" value="<%= gcmhHost %>"></td>
+	     <% if (errors.containsKey("missinggcmhHost")) { %>
+	        <span class="jive-error-text"><fmt:message key="gcmh.host.missing" /></span>
 	     <% } %> 
+	  </tr>
+	  <tr>
+	     <td width="5%" valign="top"><fmt:message key="gcmh.port" />:&nbsp;</td>
+	     <td width="95%"><input type="text" name="gcmhPort" value="<%= gcmhPort %>"></td>
+	     <% if (errors.containsKey("missinggcmhPort")) { %>
+	        <span class="jive-error-text"><fmt:message key="gcmh.port.missing" /></span>
+	     <% } %>
+	  </tr>
+	  <tr>
+	     <td width="5%" valign="top"><fmt:message key="gcmh.sender.id" />:&nbsp;</td>
+	     <td width="95%"><input type="text" name="gcmhSenderId" value="<%= gcmhSenderId %>"></td>
+	     <% if (errors.containsKey("missinggcmhSenderId")) { %>
+	        <span class="jive-error-text"><fmt:message key="gcmh.sender.id.missing" /></span>
+	     <% } %>
+	  </tr>
+	  <tr>
+	     <td width="5%" valign="top"><fmt:message key="gcmh.api.key" />:&nbsp;</td>
+	     <td width="95%"><input type="text" name="gcmhApiKey" value="<%= gcmhApiKey %>"></td>
+	     <% if (errors.containsKey("missinggcmhApiKey")) { %>
+	        <span class="jive-error-text"><fmt:message key="gcmh.api.key.missing" /></span>
+	     <% } %>
 	  </tr>
 	  <tr>
 	     <td width="1%" align="center" nowrap><input type="checkbox" name="gcmhMode" <%=gcmhMode ? "checked" : "" %>></td>
